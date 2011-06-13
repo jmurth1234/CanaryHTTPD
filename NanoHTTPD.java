@@ -14,6 +14,8 @@ import java.util.TimeZone;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  * A simple, tiny, nicely embeddable HTTP 1.0 server in Java
@@ -59,6 +61,7 @@ public class NanoHTTPD {
 
     private static PropertiesFile properties = new PropertiesFile("CanaryHTTPD.properties");
     public static int httpPoThinOrt;
+    public static final String DATE_FORMAT_NOW = "yyyy-MM-dd HH:mm:ss";
     // ==================================================
     // API parts
     // ==================================================
@@ -74,6 +77,13 @@ public class NanoHTTPD {
      * @param header	Header entries, percent decoded
      * @return HTTP response, see class Response for details
      */
+
+    public static String now() {
+    Calendar cal = Calendar.getInstance();
+    SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_NOW);
+    return sdf.format(cal.getTime());
+
+  }
     @SuppressWarnings("unused")
     public Response serve(String uri, String method, Properties header, Properties parms, Properties files) throws FileNotFoundException {
         PrintWriter q = new PrintWriter(
@@ -84,21 +94,23 @@ public class NanoHTTPD {
         Enumeration e = header.propertyNames();
         while (e.hasMoreElements()) {
             String value = (String) e.nextElement();
-            q.println("  HDR: '" + value + "' = '"
+            q.println(now() + "  HDR: '" + value + "' = '"
                     + header.getProperty(value) + "'");
         }
         e = parms.propertyNames();
         while (e.hasMoreElements()) {
             String value = (String) e.nextElement();
-            q.println("  PRM: '" + value + "' = '"
+            q.println(now() + "  PRM: '" + value + "' = '"
                     + parms.getProperty(value) + "'");
         }
         e = files.propertyNames();
         while (e.hasMoreElements()) {
             String value = (String) e.nextElement();
-            q.println("  UPLOADED: '" + value + "' = '"
+            q.println(now() + "  UPLOADED: '" + value + "' = '"
                     + files.getProperty(value) + "'");
         }
+
+
 
         return serveFile(uri, header, new File("./html/"), true);
 
