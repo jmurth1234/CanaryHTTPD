@@ -1,0 +1,5 @@
+What is CanaryHTTPD?
+This plugin adds a simple web server that runs alongside your Canary server! It runs the server on the same URL/IP as your Canary server, but NOT the same port. It has one configurable option, and that is the port on which it runs on. (default 8080)
+
+Compiling form Source
+This git repo includes no project files, so create a new project in your IDE and set it to these source files
